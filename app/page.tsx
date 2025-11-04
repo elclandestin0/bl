@@ -1,65 +1,75 @@
-import Image from "next/image";
+// app/page.tsx
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-dvh relative overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden
+        style={{
+          background:
+            "radial-gradient(1200px 600px at 20% 10%, rgba(179,189,92,0.25), transparent 60%), radial-gradient(900px 500px at 80% 90%, rgba(84,83,55,0.35), transparent 60%)",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-multiply"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.8'/></svg>\")",
+        }}
+      />
+
+      {/* Content */}
+      <section className="relative z-10 mx-auto flex min-h-dvh max-w-5xl flex-col items-center justify-center px-6 text-center">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold leading-tight tracking-tight">
+          Borrow or Lend<br className="hidden sm:block" />
+          <span className="whitespace-nowrap text-2xl">
+            Want stuff and things? Say less.
+          </span>
+        </h1>
+
+        <p className="mt-4 text-base/7 md:text-lg/8 text-[color:var(--color-muted)] max-w-2xl">
+          Pick your side.
+        </p>
+
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+          <Link href="/borrowers" className="btn btn-primary text-lg px-8 py-4">
+            I want to borrow
+          </Link>
+          <Link href="/lenders" className="btn btn-outline text-lg px-8 py-4">
+            I want to lend
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+    </main>
+  );
+}
+
+// app/borrowers/page.tsx
+export function Borrowers() {
+  return (
+    <div className="min-h-dvh grid place-items-center">
+      <div className="text-center">
+        <h2 className="text-3xl font-semibold">Borrowers</h2>
+        <p className="text-[color:var(--color-muted)] mt-2">
+          Start by defining your ask. (We’ll wire forms next.)
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// app/lenders/page.tsx
+export function Lenders() {
+  return (
+    <div className="min-h-dvh grid place-items-center">
+      <div className="text-center">
+        <h2 className="text-3xl font-semibold">Lenders</h2>
+        <p className="text-[color:var(--color-muted)] mt-2">
+          Configure your pool & terms. (Coming next.)
+        </p>
+      </div>
     </div>
   );
 }
