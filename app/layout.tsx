@@ -2,7 +2,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { WalletProvider } from "./lib/wallet/WalletProvider";
-// If you’re using React Query as earlier, keep it here too.
+import MetaMaskButton from "./components/wallet/MetaMaskButton";
 
 export const metadata: Metadata = {
   title: "Lend / Borrow — Mock",
@@ -14,6 +14,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <WalletProvider>
+          <header className="sticky top-0 z-40 backdrop-blur">
+            <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-end">
+              <MetaMaskButton />
+            </div>
+          </header>
+
           {children}
         </WalletProvider>
       </body>
