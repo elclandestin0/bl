@@ -15,25 +15,70 @@ function formatCurrency(n: number) {
   return n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
+
+
 export default function UnderwritePage() {
   const router = useRouter();
   const { address, connect } = useWallet();
 
+
   const [recommendedAmount, setRecommendedAmount] = useState<number | null>(null);
   const [recommendedInterest, setRecommendedInterest] = useState<number | null>(null);
+  const [amount, setAmount] = useState<number | "">("");
+  const [interest, setInterest] = useState<number | "">("");
+
+  const amountDelta = recommendedAmount && amount ? amount - recommendedAmount : 0;
+  const interestDelta = recommendedInterest && interest ? interest - recommendedInterest : 0;
+
 
   useEffect(() => {
     setRecommendedAmount(randInt(1000, 20000));
     setRecommendedInterest(randFloat(5, 20, 1));
   }, []);
 
-  const [amount, setAmount] = useState<number | "">("");
-  const [interest, setInterest] = useState<number | "">("");
-
   useEffect(() => {
     if (recommendedAmount !== null && amount === "") setAmount(recommendedAmount);
     if (recommendedInterest !== null && interest === "") setInterest(recommendedInterest);
   }, [recommendedAmount, recommendedInterest]);
+
+  function adviceMessage() {
+    if (!amountValid || !interestValid) return null;
+
+    const amt = amountDelta;
+    const apr = interestDelta;
+
+    // Slight wiggle room: ±3%
+    const close = Math.abs(amt / recommendedAmount!) < 0.05 && Math.abs(apr / recommendedInterest!) < 0.05;
+
+    if (close) return "Your terms closely match our suggested profile.";
+
+    if (amt > 0 && apr < 0) return "You're asking for more money while offering lower interest — lenders may reject this.";
+    if (amt > 0 && apr > 0) return "You’re requesting more than recommended but offering higher interest to offset.";
+    if (amt < 0 && apr > 0) return "You're asking for less and offering more interest — this is highly favorable to lenders.";
+    if (amt < 0 && apr < 0) return "You're asking for less and offering lower interest — neutral trade-off, depends on borrower strength.";
+
+    return "Adjusting terms affects perceived repayment confidence.";
+  }
+
+  function deltaText() {
+    if (!amountValid || !interestValid) return null;
+  
+    const amt = amount as number;
+    const apr = interest as number;
+  
+    const amtDiff = amt - (recommendedAmount as number);
+    const aprDiff = apr - (recommendedInterest as number);
+  
+    const amtWord = amtDiff > 0 ? "above" : amtDiff < 0 ? "below" : "equal to";
+    const aprWord = aprDiff > 0 ? "above" : aprDiff < 0 ? "below" : "equal to";
+  
+    // absolute values for display
+    const absAmtDiff = Math.abs(amtDiff);
+    const absAprDiff = Math.abs(aprDiff);
+  
+    return `This amount is €${formatCurrency(absAmtDiff)} ${amtWord} the recommended amount and ${absAprDiff.toFixed(1)}% ${aprWord} the recommended interest.`;
+  }
+  
 
   const amountValid = typeof amount === "number" && amount >= 1000 && amount <= 20000;
   const interestValid = typeof interest === "number" && interest >= 5 && interest <= 20;
@@ -133,6 +178,11 @@ export default function UnderwritePage() {
             All borrowed amounts must be repaid within <span className="font-medium">30 days</span>.
             Late repayment may result in loss of lender confidence and reduced future borrowing limits.
           </p>
+          {deltaText() && (
+            <p className="text-sm text-[color:var(--color-muted)] border-t pt-3">
+              {deltaText()}
+            </p>
+          )}
         </div>
 
         {/* Submit */}
