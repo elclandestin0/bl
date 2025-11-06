@@ -15,13 +15,11 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [address, setAddress] = useState<string | null>(null);
   const [connecting, setConnecting] = useState(false);
 
-  // restore cached address
   useEffect(() => {
     const cached = localStorage.getItem("walletAddr");
     if (cached) setAddress(cached);
   }, []);
 
-  // subscribe to wallet events (EIP-1193)
   useEffect(() => {
     const eth = (window as any)?.ethereum;
     if (!eth?.on) return;

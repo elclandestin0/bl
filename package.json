@@ -9,7 +9,7 @@
     "lint": "eslint",
     "compile": "hardhat compile",
     "node": "hardhat node",
-    "deploy": "hardhat run scripts/deploy.ts --network localhost"
+    "deploy": "npx tsx scripts/deploy.ts --network localhost"
   },
   "dependencies": {
     "next": "16.0.1",
@@ -29,6 +29,7 @@
     "hardhat": "^2.26.5",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }
 }

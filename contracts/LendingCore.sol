@@ -47,7 +47,6 @@ contract LendingCore is ReentrancyGuard {
 
     constructor(address usdc) { require(usdc != address(0), "USDC=0"); USDC = IERC20(usdc); }
 
-    // ---- Bids ----
     function submitBid(uint256 amount, uint256 aprBps) external returns (uint256 bidId) {
         require(amount >= 1_000e6 && amount <= 20_000e6, "amount range"); // USDC 6dp
         require(aprBps >= 500 && aprBps <= 2000, "apr range");
@@ -90,7 +89,6 @@ contract LendingCore is ReentrancyGuard {
         emit BidAccepted(bidId, loanId, msg.sender);
     }
 
-    // ---- Repay (routes borrower -> lender) ----
     function repay(uint256 loanId, uint256 amount) external nonReentrant {
         Loan storage L = loans[loanId];
         require(L.borrower != address(0), "loan NA");
@@ -111,7 +109,6 @@ contract LendingCore is ReentrancyGuard {
         emit Repaid(loanId, msg.sender, pay, L.repaid, remain);
     }
 
-    // ---- Default ----
     function markDefault(uint256 loanId) external {
         Loan storage L = loans[loanId];
         require(!L.settled && !L.defaulted, "closed");
@@ -124,7 +121,6 @@ contract LendingCore is ReentrancyGuard {
         emit Defaulted(loanId, block.timestamp, remain);
     }
 
-    // ---- Views ----
     function outstanding(uint256 loanId) public view returns (uint256) {
         Loan storage L = loans[loanId];
         if (L.borrower == address(0)) return 0;
@@ -146,7 +142,6 @@ contract LendingCore is ReentrancyGuard {
         return L.repaid >= gross ? 0 : (gross - L.repaid);
     }
 
-    // 0 ACTIVE, 1 LATE, 2 SETTLED, 3 DEFAULTED
     function status(uint256 loanId) external view returns (uint8) {
         Loan storage L = loans[loanId];
         if (L.settled) return 2;

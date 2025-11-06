@@ -2,12 +2,12 @@
 pragma solidity ^0.8.24;
 
 library InterestMath {
-    uint256 internal constant YEAR_SECONDS = 365 days;
+    uint256 internal constant MONTH_SECONDS = 28 days;
 
     function calcBaseInterest(uint256 principal, uint256 aprBps, uint256 elapsedSeconds)
         internal pure returns (uint256)
     {
-        return (principal * aprBps * elapsedSeconds) / (10_000 * YEAR_SECONDS);
+        return (principal * aprBps * elapsedSeconds) / (10_000 * MONTH_SECONDS);
     }
 
     function calcPenaltyPerDays(uint256 principal, uint256 penaltyBpsPerDay, uint256 daysLate)

@@ -11,17 +11,17 @@ async function main() {
     const mockAddr = await mock.getAddress();
     console.log("Mock USDC:", mockAddr);
 
-    const Core = await ethers.getContractFactory("P2PLendingCore");
+    const Core = await ethers.getContractFactory("LendingCore");
     const core = await Core.deploy(mockAddr);
     await core.waitForDeployment();
-    console.log("P2PLendingCore:", await core.getAddress());
+    console.log("LendingCore:", await core.getAddress());
     return;
   }
 
-  const Core = await ethers.getContractFactory("P2PLendingCore");
+  const Core = await ethers.getContractFactory("LendingCore");
   const core = await Core.deploy(usdcFromEnv);
   await core.waitForDeployment();
-  console.log("P2PLendingCore:", await core.getAddress());
+  console.log("LendingCore:", await core.getAddress());
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
