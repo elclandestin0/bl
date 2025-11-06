@@ -14,12 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <WalletProvider>
-          <header className="sticky top-0 z-40 backdrop-blur">
+          <header className="sticky top-0 z-40">
             <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-end">
               <MetaMaskButton />
             </div>
           </header>
-
           {children}
         </WalletProvider>
       </body>

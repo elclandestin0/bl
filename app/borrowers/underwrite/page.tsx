@@ -92,7 +92,7 @@ export default function UnderwritePage() {
     if (!amountValid || !interestValid) return;
 
     try {
-      await submitBid(amount as number, interest as number);
+      await submitBid(amount as number, interest as number, recommendedAmount as number, recommendedInterest as number);
       alert("Bid submitted! " + (txHash ?? ""));
       router.push("/borrowers");
     } catch {
@@ -186,7 +186,6 @@ export default function UnderwritePage() {
             </p>
           )}
         </div>
-
         <button
           onClick={handleSubmit}
           disabled={loading || !address || !amountValid || !interestValid}

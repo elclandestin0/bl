@@ -95,7 +95,7 @@ export interface LendingCoreInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "submitBid",
-    values: [BigNumberish, BigNumberish]
+    values: [BigNumberish, BigNumberish, BigNumberish, BigNumberish]
   ): string;
 
   decodeFunctionResult(
@@ -162,19 +162,25 @@ export namespace BidSubmittedEvent {
     bidId: BigNumberish,
     borrower: AddressLike,
     amount: BigNumberish,
-    aprBps: BigNumberish
+    aprBps: BigNumberish,
+    recommendedAmount: BigNumberish,
+    recommendedApr: BigNumberish
   ];
   export type OutputTuple = [
     bidId: bigint,
     borrower: string,
     amount: bigint,
-    aprBps: bigint
+    aprBps: bigint,
+    recommendedAmount: bigint,
+    recommendedApr: bigint
   ];
   export interface OutputObject {
     bidId: bigint;
     borrower: string;
     amount: bigint;
     aprBps: bigint;
+    recommendedAmount: bigint;
+    recommendedApr: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -351,7 +357,12 @@ export interface LendingCore extends BaseContract {
   status: TypedContractMethod<[loanId: BigNumberish], [bigint], "view">;
 
   submitBid: TypedContractMethod<
-    [amount: BigNumberish, aprBps: BigNumberish],
+    [
+      amount: BigNumberish,
+      aprBps: BigNumberish,
+      recommendedAmount: BigNumberish,
+      recommendedApr: BigNumberish
+    ],
     [bigint],
     "nonpayable"
   >;
@@ -448,7 +459,12 @@ export interface LendingCore extends BaseContract {
   getFunction(
     nameOrSignature: "submitBid"
   ): TypedContractMethod<
-    [amount: BigNumberish, aprBps: BigNumberish],
+    [
+      amount: BigNumberish,
+      aprBps: BigNumberish,
+      recommendedAmount: BigNumberish,
+      recommendedApr: BigNumberish
+    ],
     [bigint],
     "nonpayable"
   >;
@@ -512,7 +528,7 @@ export interface LendingCore extends BaseContract {
       BidCancelledEvent.OutputObject
     >;
 
-    "BidSubmitted(uint256,address,uint256,uint256)": TypedContractEvent<
+    "BidSubmitted(uint256,address,uint256,uint256,uint256,uint256)": TypedContractEvent<
       BidSubmittedEvent.InputTuple,
       BidSubmittedEvent.OutputTuple,
       BidSubmittedEvent.OutputObject

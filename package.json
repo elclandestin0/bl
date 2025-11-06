@@ -9,9 +9,17 @@
     "lint": "eslint",
     "compile": "hardhat compile",
     "node": "hardhat node",
-    "deploy": "npx hardhat run scripts/deploy.js --network localhost"
+    "deploy": "npx hardhat run scripts/deploy.js --network localhost",
+    "indexer": "tsx indexer/watcher.ts",
+    "api": "tsx indexer/api.ts",
+    "backend": "npm-run-all -p indexer api"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.19.3",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0"
@@ -22,6 +30,8 @@
     "@tailwindcss/postcss": "^4",
     "@typechain/ethers-v6": "^0.5.1",
     "@typechain/hardhat": "^9.1.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
     "@types/node": "^20.19.24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -29,6 +39,7 @@
     "eslint-config-next": "16.0.1",
     "ethers": "^6.15.0",
     "hardhat": "^2.26.5",
+    "npm-run-all": "^4.1.5",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.6",

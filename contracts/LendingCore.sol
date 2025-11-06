@@ -39,7 +39,7 @@ contract LendingCore is ReentrancyGuard {
     mapping(uint256 => Bid)  public bids;
     mapping(uint256 => Loan) public loans;
 
-    event BidSubmitted(uint256 indexed bidId, address indexed borrower, uint256 amount, uint256 aprBps);
+    event BidSubmitted(uint256 indexed bidId, address indexed borrower, uint256 amount, uint256 aprBps, uint256 recommendedAmount, uint256 recommendedApr );
     event BidCancelled(uint256 indexed bidId);
     event BidAccepted(uint256 indexed bidId, uint256 indexed loanId, address indexed lender);
     event Repaid(uint256 indexed loanId, address indexed payer, uint256 amount, uint256 newRepaid, uint256 outstanding);
@@ -47,13 +47,13 @@ contract LendingCore is ReentrancyGuard {
 
     constructor(address usdc) { require(usdc != address(0), "USDC=0"); USDC = IERC20(usdc); }
 
-    function submitBid(uint256 amount, uint256 aprBps) external returns (uint256 bidId) {
+    function submitBid(uint256 amount, uint256 aprBps, uint256 recommendedAmount, uint256 recommendedApr) external returns (uint256 bidId) {
         require(amount >= 1_000e6 && amount <= 20_000e6, "amount range");
         require(aprBps >= 500 && aprBps <= 2000, "apr range");
 
         bidId = nextBidId++;
         bids[bidId] = Bid({ borrower: msg.sender, amount: amount, aprBps: aprBps, open: true });
-        emit BidSubmitted(bidId, msg.sender, amount, aprBps);
+        emit BidSubmitted(bidId, msg.sender, amount, aprBps, recommendedAmount, recommendedApr);
     }
 
     function cancelBid(uint256 bidId) external {
