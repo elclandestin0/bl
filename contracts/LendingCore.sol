@@ -20,6 +20,8 @@ contract LendingCore is ReentrancyGuard {
         address borrower;
         uint256 amount;
         uint256 aprBps;
+        uint256 recommendedAmount;
+        uint256 recommendedAprBps;
         bool open;
     }
 
@@ -52,7 +54,7 @@ contract LendingCore is ReentrancyGuard {
         require(aprBps >= 500 && aprBps <= 2000, "apr range");
 
         bidId = nextBidId++;
-        bids[bidId] = Bid({ borrower: msg.sender, amount: amount, aprBps: aprBps, open: true });
+        bids[bidId] = Bid({ borrower: msg.sender, amount: amount, aprBps: aprBps, recommendedAmount: recommendedAmount, recommendedAprBps: recommendedApr, open: true });
         emit BidSubmitted(bidId, msg.sender, amount, aprBps, recommendedAmount, recommendedApr);
     }
 

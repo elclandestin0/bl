@@ -10,7 +10,9 @@ type UiBid = {
     id: number;
     borrower: string;
     amount: number;
+    recommendedAmount: number;
     aprPercent: number;
+    recommendedAprPercent: number;
     open: boolean;
 };
 
@@ -19,8 +21,10 @@ function format(id: number, b: Bid): UiBid {
     return {
         id,
         borrower: b.borrower,
-        amount: Number(b.amount) / 1_000_000, // USDC 6dp -> $
-        aprPercent: Number(b.aprBps) / 100,       // bps -> %
+        amount: Number(b.amount) / 1_000_000,
+        aprPercent: Number(b.aprBps) / 100,
+        recommendedAmount: Number(b.recommendedAmount) / 1_000_000,
+        recommendedAprPercent: Number(b.recommendedAprBps) / 100,
         open: b.open,
     };
 }
@@ -113,10 +117,12 @@ export default function BidsAccordion({ borrower }: { borrower?: string | null }
                     {rows.map((b) => (
                         <details key={b.id} className="rounded-2xl border">
                             <summary className="cursor-pointer px-4 py-3 grid grid-cols-12 gap-2 items-center">
-                                <div className="col-span-3 font-medium">Bid #{b.id}</div>
-                                <div className="col-span-3">${b.amount.toLocaleString()}</div>
-                                <div className="col-span-3">{b.aprPercent}% APR</div>
-                                <div className="col-span-3 text-right">
+                                <div className="col-span-2 font-medium">Bid #{b.id}</div>
+                                <div className="col-span-2">${b.amount.toLocaleString()}</div>
+                                <div className="col-span-2">{b.aprPercent}% APR</div>
+                                <div className="col-span-2">${b.recommendedAmount.toLocaleString()}</div>
+                                <div className="col-span-2">{b.recommendedAprPercent}% Rec. APR</div>
+                                <div className="col-span-2 text-right">
                                     <span
                                         className={`inline-block text-xs px-2 py-0.5 rounded-md border ${b.open ? "border-yellow-500 text-yellow-700" : "border-blue-600 text-blue-700"
                                             }`}

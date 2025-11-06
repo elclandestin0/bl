@@ -294,10 +294,12 @@ export interface LendingCore extends BaseContract {
   bids: TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [string, bigint, bigint, boolean] & {
+      [string, bigint, bigint, bigint, bigint, boolean] & {
         borrower: string;
         amount: bigint;
         aprBps: bigint;
+        recommendedAmount: bigint;
+        recommendedAprBps: bigint;
         open: boolean;
       }
     ],
@@ -391,10 +393,12 @@ export interface LendingCore extends BaseContract {
   ): TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [string, bigint, bigint, boolean] & {
+      [string, bigint, bigint, bigint, bigint, boolean] & {
         borrower: string;
         amount: bigint;
         aprBps: bigint;
+        recommendedAmount: bigint;
+        recommendedAprBps: bigint;
         open: boolean;
       }
     ],

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { LendingCore } from "@/typechain-types";
 import { getCoreContract } from "@/app/lib/eth/contracts/core";
 import { Loan } from "@/app/lib/types/structs";
 
