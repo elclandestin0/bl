@@ -75,7 +75,7 @@ export default function UnderwritePage() {
     const absAmtDiff = Math.abs(amtDiff);
     const absAprDiff = Math.abs(aprDiff);
 
-    return `This amount is €${formatCurrency(absAmtDiff)} ${amtWord} the recommended amount and ${absAprDiff.toFixed(1)}% ${aprWord} the recommended interest.`;
+    return `This amount is $${formatCurrency(absAmtDiff)} ${amtWord} the recommended amount and ${absAprDiff.toFixed(1)}% ${aprWord} the recommended interest.`;
   }
 
 
@@ -115,7 +115,7 @@ export default function UnderwritePage() {
         <div className="rounded-2xl border p-5 space-y-2">
           <div className="text-sm text-[color:var(--color-muted)]">Suggested Amount</div>
           <div className="text-2xl font-semibold">
-            {recommendedAmount ? `€${formatCurrency(recommendedAmount)}` : "—"}
+            {recommendedAmount ? `$${formatCurrency(recommendedAmount)}` : "—"}
           </div>
 
           <div className="pt-4 text-sm text-[color:var(--color-muted)]">Suggested Interest</div>
@@ -128,7 +128,7 @@ export default function UnderwritePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
           <div className="rounded-2xl border p-5 space-y-3">
-            <div className="font-semibold">Amount (€)</div>
+            <div className="font-semibold">Amount ($)</div>
             <input
               type="number"
               className="w-full rounded-lg border px-3 py-2"
@@ -140,7 +140,7 @@ export default function UnderwritePage() {
               }
             />
             {!amountValid && (
-              <div className="text-sm text-red-600">Must be between €1,000–€20,000</div>
+              <div className="text-sm text-red-600">Must be between $1,000–$20,000</div>
             )}
           </div>
 
@@ -168,11 +168,11 @@ export default function UnderwritePage() {
         <div className="rounded-2xl border p-5 space-y-2">
           <div className="text-sm text-[color:var(--color-muted)]">Total Repayable</div>
           <div className="text-2xl font-semibold">
-            {totalRepay ? `€${formatCurrency(totalRepay)}` : "—"}
+            {totalRepay ? `$${formatCurrency(totalRepay)}` : "—"}
           </div>
           {amountValid && interestValid && (
             <div className="text-sm text-[color:var(--color-muted)]">
-              €{formatCurrency(amount)} principal • {interest}% APR
+              ${formatCurrency(amount)} principal • {interest}% APR
             </div>
           )}
           <p className="text-sm leading-relaxed text-[color:var(--color-muted)]">

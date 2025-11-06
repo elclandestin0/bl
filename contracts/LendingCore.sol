@@ -18,8 +18,8 @@ contract LendingCore is ReentrancyGuard {
 
     struct Bid {
         address borrower;
-        uint256 amount;   // USDC (6 decimals expected)
-        uint256 aprBps;   // 1200 = 12.00%
+        uint256 amount;
+        uint256 aprBps;
         bool open;
     }
 
@@ -48,7 +48,7 @@ contract LendingCore is ReentrancyGuard {
     constructor(address usdc) { require(usdc != address(0), "USDC=0"); USDC = IERC20(usdc); }
 
     function submitBid(uint256 amount, uint256 aprBps) external returns (uint256 bidId) {
-        require(amount >= 1_000e6 && amount <= 20_000e6, "amount range"); // USDC 6dp
+        require(amount >= 1_000e6 && amount <= 20_000e6, "amount range");
         require(aprBps >= 500 && aprBps <= 2000, "apr range");
 
         bidId = nextBidId++;

@@ -9,7 +9,7 @@ import { Bid } from "@/app/lib/types/structs";
 type UiBid = {
     id: number;
     borrower: string;
-    amountEuro: number;
+    amount: number;
     aprPercent: number;
     open: boolean;
 };
@@ -19,7 +19,7 @@ function format(id: number, b: Bid): UiBid {
     return {
         id,
         borrower: b.borrower,
-        amountEuro: Number(b.amount) / 1_000_000, // USDC 6dp -> €
+        amount: Number(b.amount) / 1_000_000, // USDC 6dp -> $
         aprPercent: Number(b.aprBps) / 100,       // bps -> %
         open: b.open,
     };
@@ -114,14 +114,14 @@ export default function BidsAccordion({ borrower }: { borrower?: string | null }
                         <details key={b.id} className="rounded-2xl border">
                             <summary className="cursor-pointer px-4 py-3 grid grid-cols-12 gap-2 items-center">
                                 <div className="col-span-3 font-medium">Bid #{b.id}</div>
-                                <div className="col-span-3">€{b.amountEuro.toLocaleString()}</div>
+                                <div className="col-span-3">${b.amount.toLocaleString()}</div>
                                 <div className="col-span-3">{b.aprPercent}% APR</div>
                                 <div className="col-span-3 text-right">
                                     <span
                                         className={`inline-block text-xs px-2 py-0.5 rounded-md border ${b.open ? "border-yellow-500 text-yellow-700" : "border-blue-600 text-blue-700"
                                             }`}
                                     >
-                                        {b.open ? "OPEN" : "CLOSED"}
+                                        {b.open ? "PENDING" : "CLOSED"}
                                     </span>
                                 </div>
                             </summary>
@@ -134,7 +134,7 @@ export default function BidsAccordion({ borrower }: { borrower?: string | null }
                                         </div>
                                         <div>
                                             <div className="text-[color:var(--color-muted)]">Amount</div>
-                                            <div>€{b.amountEuro.toLocaleString()}</div>
+                                            <div>${b.amount.toLocaleString()}</div>
                                         </div>
                                         <div>
                                             <div className="text-[color:var(--color-muted)]">APR</div>
