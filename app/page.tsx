@@ -45,31 +45,3 @@ export default function Home() {
     </main>
   );
 }
-
-// app/borrowers/page.tsx
-export function Borrowers() {
-  return (
-    <div className="min-h-dvh grid place-items-center">
-      <div className="text-center">
-        <h2 className="text-3xl font-semibold">Borrowers</h2>
-        <p className="text-[color:var(--color-muted)] mt-2">
-          Start by defining your ask. (We’ll wire forms next.)
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// app/lenders/page.tsx
-export function Lenders() {
-  return (
-    <div className="min-h-dvh grid place-items-center">
-      <div className="text-center">
-        <h2 className="text-3xl font-semibold">Lenders</h2>
-        <p className="text-[color:var(--color-muted)] mt-2">
-          Configure your pool & terms. (Coming next.)
-        </p>
-      </div>
-    </div>
-  );
-}
