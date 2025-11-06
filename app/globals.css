@@ -12,6 +12,7 @@
   --fg: var(--ink);
   --accent: var(--lime-400);
   --muted: color-mix(in oklab, var(--olive-700) 85%, white);
+  --off: color-mix(in oklab, var(--sand) 50%, var(--accent));
 }
 
 @theme inline {
