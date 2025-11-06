@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useWallet } from "../../lib/wallet/WalletProvider";
+import { useSubmitBid } from "@/app/lib/hooks/useLendingCore";
 
 function randInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -16,12 +17,10 @@ function formatCurrency(n: number) {
 }
 
 
-
 export default function UnderwritePage() {
   const router = useRouter();
-  const { address, connect } = useWallet();
-
-
+  const { address } = useWallet();
+  const { submitBid, loading, txHash, error } = useSubmitBid();
   const [recommendedAmount, setRecommendedAmount] = useState<number | null>(null);
   const [recommendedInterest, setRecommendedInterest] = useState<number | null>(null);
   const [amount, setAmount] = useState<number | "">("");
@@ -62,23 +61,23 @@ export default function UnderwritePage() {
 
   function deltaText() {
     if (!amountValid || !interestValid) return null;
-  
+
     const amt = amount as number;
     const apr = interest as number;
-  
+
     const amtDiff = amt - (recommendedAmount as number);
     const aprDiff = apr - (recommendedInterest as number);
-  
+
     const amtWord = amtDiff > 0 ? "above" : amtDiff < 0 ? "below" : "equal to";
     const aprWord = aprDiff > 0 ? "above" : aprDiff < 0 ? "below" : "equal to";
-  
+
     // absolute values for display
     const absAmtDiff = Math.abs(amtDiff);
     const absAprDiff = Math.abs(aprDiff);
-  
+
     return `This amount is €${formatCurrency(absAmtDiff)} ${amtWord} the recommended amount and ${absAprDiff.toFixed(1)}% ${aprWord} the recommended interest.`;
   }
-  
+
 
   const amountValid = typeof amount === "number" && amount >= 1000 && amount <= 20000;
   const interestValid = typeof interest === "number" && interest >= 5 && interest <= 20;
@@ -88,14 +87,17 @@ export default function UnderwritePage() {
     return Math.round((amount + amount * (interest / 100)) * 100) / 100;
   }, [amount, interest, amountValid, interestValid]);
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!address) return alert("Connect wallet first.");
     if (!amountValid || !interestValid) return;
-    const mockHash = "0x" + Array.from({ length: 64 }, () =>
-      Math.floor(Math.random() * 16).toString(16)
-    ).join("");
-    alert("Mock TX submitted:\n" + mockHash);
-    router.push("/borrowers");
+
+    try {
+      await submitBid(amount as number, interest as number);
+      alert("Bid submitted! " + (txHash ?? ""));
+      router.push("/borrowers");
+    } catch {
+      // error state already set; optional toast here
+    }
   }
 
   return (
@@ -185,14 +187,14 @@ export default function UnderwritePage() {
           )}
         </div>
 
-        {/* Submit */}
         <button
           onClick={handleSubmit}
-          disabled={!address || !amountValid || !interestValid}
+          disabled={loading || !address || !amountValid || !interestValid}
           className="btn btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Submit Bid
+          {loading ? "Submitting…" : "Submit Bid"}
         </button>
+        {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
       </div>
     </div>
   );

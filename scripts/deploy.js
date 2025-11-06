@@ -1,10 +1,10 @@
-import { ethers } from "hardhat";
+const { ethers } = require("hardhat");
 
 async function main() {
   const usdcFromEnv = process.env.USDC_ADDRESS;
 
   if (!usdcFromEnv) {
-    console.log("No USDC_ADDRESS provided; deploying mock USDC (6 decimals) for local dev…");
+    console.log("No USDC_ADDRESS; deploying mock USDC (6dp)...");
     const Mock = await ethers.getContractFactory("ERC20Mock");
     const mock = await Mock.deploy("MockUSDC", "mUSDC", 6);
     await mock.waitForDeployment();
