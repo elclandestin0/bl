@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCoreContract } from "@/app/lib/eth/contracts/core";
 import { Bid } from "@/app/lib/types/structs";
+import ReviewBidModal from "./ReviewBidModal";
 
 type UiBid = {
     id: number;
@@ -30,6 +31,7 @@ function format(id: number, b: Bid): UiBid {
 
 export default function OpenBidsAccordion() {
     const router = useRouter();
+    const [selectedBid, setSelectedBid] = useState<UiBid | null>(null);
     const [rows, setRows] = useState<UiBid[]>([]);
     const [loading, setLoading] = useState(false);
 
@@ -61,19 +63,6 @@ export default function OpenBidsAccordion() {
         <section className="space-y-3">
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold">All bids</h2>
-                {/* <button
-                    className="btn btn-outline"
-                    onClick={async () => {
-                        const core = await getCoreContract();
-                        const next = Number(await core.nextBidId());
-                        const ids = Array.from({ length: Math.max(0, next - 1) }, (_, i) => i + 1);
-                        const all = await Promise.all(ids.map((id) => core.bids(id)));
-                        const allFormatted = all.map((b, i) => format(ids[i], b));
-                        setRows(allFormatted);
-                    }}
-                >
-                    Refresh
-                </button> */}
             </div>
 
             {loading ? (
@@ -109,15 +98,15 @@ export default function OpenBidsAccordion() {
                                     <div className="col-span-2 text-right">
                                         {b.open ? (
                                             <button
-                                                className="btn-accordion"
+                                                className="btn btn-accordion"
                                                 onClick={(e) => {
-                                                    e.preventDefault(); // prevent <details> toggle
-                                                    router.push(`/lenders/review/${b.id}`);
+                                                    e.preventDefault(); // prevents <details> toggle
+                                                    setSelectedBid(b);   // opens modal
                                                 }}
-                                                aria-label={`Review terms for bid #${b.id}`}
                                             >
                                                 Review
                                             </button>
+
                                         ) : (
                                             <span className="inline-block text-xs px-2 py-0.5 rounded-md border border-blue-600 text-blue-700">
                                                 Closed
@@ -147,6 +136,12 @@ export default function OpenBidsAccordion() {
                         ))}
                     </div>
                 </>
+            )}
+            {selectedBid && (
+                <ReviewBidModal
+                    bid={selectedBid}
+                    onClose={() => setSelectedBid(null)}
+                />
             )}
         </section>
     );

@@ -68,30 +68,13 @@ export default function BidsAccordion({ borrower }: { borrower?: string | null }
         <section className="space-y-3">
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold">Your bids</h2>
-                <button
-                    className="btn btn-outline"
-                    onClick={async () => {
-                        // manual refresh
-                        const core = await getCoreContract();
-                        const next = Number(await core.nextBidId());
-                        const ids = Array.from({ length: Math.max(0, next - 1) }, (_, i) => i + 1);
-                        const all = await Promise.all(ids.map((id) => core.bids(id)));
-                        const mine = all
-                            .map((b, i) => format(ids[i], b))
-                            .filter((b) => b.borrower.toLowerCase() === normalized)
-                            .reverse();
-                        setRows(mine);
-                    }}
-                >
-                    Refresh
-                </button>
             </div>
 
             {/* Special top item: Create new bid */}
             <div className="rounded-2xl border-2 border-dotted">
                 <button
                     onClick={() => router.push("/borrowers/new")}
-                    className="w-full text-left px-4 py-3 flex items-center justify-between"
+                    className="w-full text-left px-4 py-3 flex items-center justify-between bg-accent rounded-xl"
                 >
                     <div>
                         <div className="font-semibold">Create new bid</div>
@@ -99,7 +82,7 @@ export default function BidsAccordion({ borrower }: { borrower?: string | null }
                             Start a new borrowing request
                         </div>
                     </div>
-                    <span className="text-sm">→</span>
+                    <span className="text-sm">+</span>
                 </button>
             </div>
 
