@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useWallet } from "../../lib/wallet/WalletProvider";
-import StepCard from "../../components/wallet/StepCard";
+import StepCard from "../../components/StepCard";
 
 export default function NewBidPage() {
   const router = useRouter();

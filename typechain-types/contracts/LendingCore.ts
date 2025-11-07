@@ -35,6 +35,7 @@ export interface LendingCoreInterface extends Interface {
       | "cancelBid"
       | "loans"
       | "markDefault"
+      | "minimumPayment"
       | "nextBidId"
       | "nextLoanId"
       | "outstanding"
@@ -76,6 +77,10 @@ export interface LendingCoreInterface extends Interface {
     functionFragment: "markDefault",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "minimumPayment",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "nextBidId", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "nextLoanId",
@@ -114,6 +119,10 @@ export interface LendingCoreInterface extends Interface {
   decodeFunctionResult(functionFragment: "loans", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "markDefault",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "minimumPayment",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "nextBidId", data: BytesLike): Result;
@@ -344,6 +353,8 @@ export interface LendingCore extends BaseContract {
     "nonpayable"
   >;
 
+  minimumPayment: TypedContractMethod<[loanId: BigNumberish], [bigint], "view">;
+
   nextBidId: TypedContractMethod<[], [bigint], "view">;
 
   nextLoanId: TypedContractMethod<[], [bigint], "view">;
@@ -441,6 +452,9 @@ export interface LendingCore extends BaseContract {
   getFunction(
     nameOrSignature: "markDefault"
   ): TypedContractMethod<[loanId: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "minimumPayment"
+  ): TypedContractMethod<[loanId: BigNumberish], [bigint], "view">;
   getFunction(
     nameOrSignature: "nextBidId"
   ): TypedContractMethod<[], [bigint], "view">;

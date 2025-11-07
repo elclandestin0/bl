@@ -13,7 +13,7 @@ export default function BorrowerHome() {
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-semibold">Borrow</h1>
           <p className="text-[color:var(--color-muted)] text-base leading-relaxed">
-            Overview of your bids and loans.
+            Request things to get stuff.
           </p>
         </div>
         <BidsAccordion borrower={address} />

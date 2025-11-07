@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCoreContract } from "@/app/lib/eth/contracts/core";
 import { Bid } from "@/app/lib/types/structs";
+import { truncate } from "@/app/lib/wallet/WalletProvider";
 
 type UiBid = {
     id: number;
@@ -19,7 +20,7 @@ type UiBid = {
 function format(id: number, b: Bid): UiBid {
     return {
         id,
-        borrower: b.borrower,
+        borrower: truncate(b.borrower),
         amount: Number(b.amount) / 1_000_000,
         aprPercent: Number(b.aprBps) / 100,
         recommendedAmount: Number(b.recommendedAmount) / 1_000_000,
@@ -42,7 +43,6 @@ export default function BidsAccordion({ borrower }: { borrower?: string | null }
             setLoading(true);
             try {
                 const core = await getCoreContract();
-                console.log(core)
                 const next = Number(await core.nextBidId());
                 if (next <= 1) { if (!cancel) setRows([]); return; }
 
@@ -50,7 +50,6 @@ export default function BidsAccordion({ borrower }: { borrower?: string | null }
                 const all = await Promise.all(ids.map((id) => core.bids(id))); // BidOut[]
                 const mine = all
                     .map((b, i) => format(ids[i], b))
-                    .filter((b) => b.borrower.toLowerCase() === normalized)
                     .reverse(); // newest first
                 if (!cancel) setRows(mine);
             } catch (e) {

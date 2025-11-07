@@ -1,6 +1,9 @@
 // app/borrowers/page.tsx (your BorrowerHome)
 "use client";
+import LoansAccordion from "../borrowers/components/LoansAccordion";
 import { useWallet } from "../lib/wallet/WalletProvider";
+import ActiveLoansAccordion from "./components/ActiveLoansAccordion";
+LoansAccordion
 import OpenBidsAccordion from "./components/OpenBidsAccordion";
 
 export default function BorrowerHome() {
@@ -15,6 +18,7 @@ export default function BorrowerHome() {
             Make some stuff on people's things.
           </p>
         </div>
+        <ActiveLoansAccordion lender={address}  />
         <OpenBidsAccordion />
       </div>
     </div>

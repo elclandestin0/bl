@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { getCoreContract } from "@/app/lib/eth/contracts/core";
 import { Loan } from "@/app/lib/types/structs";
 import { truncate } from "@/app/lib/wallet/WalletProvider";
-import RepayLoanModal from "./RepayLoanModal";
 
 type UiLoan = {
   id: number;
@@ -61,11 +60,10 @@ function toUi(id: number, l: Loan, statusCode: bigint, outstanding: bigint): UiL
   };
 }
 
-export default function LoansAccordion({ borrower }: { borrower?: string | null }) {
+export default function ActiveLoansAccordion({ lender }: { lender?: string | null }) {
   const [rows, setRows] = useState<UiLoan[]>([]);
   const [loading, setLoading] = useState(false);
-  const [repayLoanId, setRepayLoanId] = useState<number | null>(null);
-  const normalized = useMemo(() => (borrower ?? "").toLowerCase(), [borrower]);
+  const normalized = useMemo(() => (lender ?? "").toLowerCase(), [lender]);
 
   async function load() {
     if (!normalized) { setRows([]); return; }
@@ -83,7 +81,7 @@ export default function LoansAccordion({ borrower }: { borrower?: string | null 
 
       const mine = loanStructs
         .map((l, i) => toUi(ids[i], l, statuses[i], outs[i]))
-        .filter((u) => u.borrower.toLowerCase() === normalized)
+        .filter((u) => u.lender.toLowerCase() === normalized)
         .sort((a, b) => b.start - a.start);
 
       setRows(mine);
@@ -113,7 +111,7 @@ export default function LoansAccordion({ borrower }: { borrower?: string | null 
         </div>
       ) : rows.length === 0 ? (
         <div className="rounded-2xl border px-4 py-6 text-center text-[color:var(--color-muted)]">
-          {'Your bid(s) are still being processed!'}
+          {'Accept a bid to see it here!'}
         </div>
       ) : (
         <>
@@ -165,27 +163,11 @@ export default function LoansAccordion({ borrower }: { borrower?: string | null 
                       </div>
                     </div>
                   </div>
-                  {(l.status === "ACTIVE" || l.status === "LATE") && (
-                    <div className="pt-4 flex justify-end">
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => setRepayLoanId(l.id)}
-                      >
-                        Make Payment
-                      </button>
-                    </div>
-                  )}
                 </div>
               </details>
             ))}
           </div>
         </>
-      )}
-      {repayLoanId && (
-        <RepayLoanModal
-          loanId={repayLoanId}
-          onClose={() => setRepayLoanId(null)}
-        />
       )}
     </section>
   );

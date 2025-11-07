@@ -63,7 +63,7 @@ export default function ReviewBidModal({
 
                     <div className="flex justify-between">
                         <span className="text-[color:var(--color-muted)]">Requested Amount</span>
-                        <span>€{bid.amount.toLocaleString()}</span>
+                        <span>${bid.amount.toLocaleString()}</span>
                     </div>
 
                     <div className="flex justify-between">
@@ -75,7 +75,7 @@ export default function ReviewBidModal({
 
                     <div className="flex justify-between">
                         <span className="text-[color:var(--color-muted)]">Recommended Amount</span>
-                        <span>€{bid.recommendedAmount.toLocaleString()}</span>
+                        <span>${bid.recommendedAmount.toLocaleString()}</span>
                     </div>
 
                     <div className="flex justify-between">

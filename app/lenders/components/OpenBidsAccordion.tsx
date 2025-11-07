@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { getCoreContract } from "@/app/lib/eth/contracts/core";
 import { Bid } from "@/app/lib/types/structs";
 import ReviewBidModal from "./ReviewBidModal";
+import { truncate } from "@/app/lib/wallet/WalletProvider";
 
 type UiBid = {
     id: number;
@@ -20,7 +21,7 @@ type UiBid = {
 function format(id: number, b: Bid): UiBid {
     return {
         id,
-        borrower: b.borrower,
+        borrower: truncate(b.borrower),
         amount: Number(b.amount) / 1_000_000,
         aprPercent: Number(b.aprBps) / 100,
         recommendedAmount: Number(b.recommendedAmount) / 1_000_000,
@@ -69,6 +70,10 @@ export default function OpenBidsAccordion() {
                 <div className="rounded-2xl border px-4 py-6 text-center text-[color:var(--color-muted)]">
                     Loading…
                 </div>
+            ) : rows.length === 0 ? (
+                <div className="rounded-2xl border px-4 py-6 text-center text-[color:var(--color-muted)]">
+                    No one has posted any stuff yet. Bummer.
+                </div>
             ) : (
                 <>
                     <div
@@ -109,7 +114,7 @@ export default function OpenBidsAccordion() {
 
                                         ) : (
                                             <span className="inline-block text-xs px-2 py-0.5 rounded-md border border-blue-600 text-blue-700">
-                                                Closed
+                                                CLOSED
                                             </span>
                                         )}
                                     </div>
