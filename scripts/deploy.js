@@ -17,6 +17,7 @@ async function main() {
     await mock.mint(await lender1.getAddress(), amount);
     await mock.mint(await lender2.getAddress(), amount);
     await mock.mint(await borrower1.getAddress(), amount);
+    console.log('deployer, lender1, lender2, borrower1', + await deployer.getAddress() + ' ' + await lender1.getAddress() + ' ' + await lender2.getAddress() + ' ' + await borrower1.getAddress());
 
     const Core = await ethers.getContractFactory("LendingCore");
     const core = await Core.deploy(mockAddr);

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { getCoreContract } from "@/app/lib/eth/contracts/core";
 import { Bid } from "@/app/lib/types/structs";
 
-
 type UiBid = {
     id: number;
     borrower: string;
@@ -43,6 +42,7 @@ export default function BidsAccordion({ borrower }: { borrower?: string | null }
             setLoading(true);
             try {
                 const core = await getCoreContract();
+                console.log(core)
                 const next = Number(await core.nextBidId());
                 if (next <= 1) { if (!cancel) setRows([]); return; }
 
